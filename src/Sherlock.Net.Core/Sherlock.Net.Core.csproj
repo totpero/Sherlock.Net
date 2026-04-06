@@ -3,6 +3,13 @@
   <PropertyGroup>
     <RootNamespace>Sherlock.Net.Core</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
+
+    <!-- NuGet package -->
+    <PackageId>Sherlock.Net.Core</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Core library for hunting social media accounts by username across 400+ networks. Provides models, services, and detection engine for the Sherlock.Net tool.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +20,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\data.json" />
     <EmbeddedResource Include="Resources\data.schema.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\icon.png" Pack="true" PackagePath="\" Condition="Exists('..\..\icon.png')" />
   </ItemGroup>
 
 </Project>

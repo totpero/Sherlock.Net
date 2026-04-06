@@ -4,5 +4,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+
+    <!-- NuGet package metadata -->
+    <Authors>totpero</Authors>
+    <Company>totpero</Company>
+    <Copyright>Copyright (c) totpero</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/totpero/Sherlock.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/totpero/Sherlock.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>sherlock;osint;username;social-media;reconnaissance</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 </Project>
