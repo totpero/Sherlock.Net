@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Sherlock.Net.Cli/Sherlock.Net.Cli.csproj" />
+    <Project Path="src/Sherlock.Net.Core/Sherlock.Net.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Sherlock.Net.Core.Tests/Sherlock.Net.Core.Tests.csproj" />
+  </Folder>
+</Solution>

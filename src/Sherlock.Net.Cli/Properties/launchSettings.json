@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Sherlock.Net.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "totpero"
+    }
+  }
+}
