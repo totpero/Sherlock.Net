@@ -27,6 +27,33 @@ public class SherlockFactoryTests
     }
 
     [Fact]
+    public async Task Create_SearchAsync_IllegalUsername_ReturnsIllegal()
+    {
+        var (service, siteProvider) = SherlockFactory.Create();
+        var sites = await siteProvider.LoadSitesAsync();
+
+        var options = new SherlockOptions
+        {
+            Timeout = TimeSpan.FromSeconds(5),
+            SiteFilter = ["GitHub"]
+        };
+
+        var results = new List<QueryResult>();
+        await foreach (var result in service.SearchAsync("invalid user with spaces!", sites, options))
+        {
+            results.Add(result);
+        }
+
+        results.ShouldNotBeEmpty();
+        results.ShouldAllBe(r => r.Status == QueryStatus.Illegal);
+    }
+
+    /// <summary>
+    /// Tests that make real HTTP requests are excluded from CI (WAF may block).
+    /// Run locally with: dotnet test --filter "Category=Integration"
+    /// </summary>
+    [Trait("Category", "Integration")]
+    [Fact]
     public async Task Create_SearchAsync_FindsGitHubUser()
     {
         var (service, siteProvider) = SherlockFactory.Create();
@@ -51,31 +78,7 @@ public class SherlockFactoryTests
         github.ProfileUrl.ShouldContain("testuser123");
     }
 
-    [Fact]
-    public async Task Create_SearchAsync_IllegalUsername_ReturnsIllegal()
-    {
-        var (service, siteProvider) = SherlockFactory.Create();
-        var sites = await siteProvider.LoadSitesAsync();
-
-        var options = new SherlockOptions
-        {
-            Timeout = TimeSpan.FromSeconds(5),
-            SiteFilter = ["GitHub"]
-        };
-
-        var results = new List<QueryResult>();
-        await foreach (var result in service.SearchAsync("invalid user with spaces!", sites, options))
-        {
-            results.Add(result);
-        }
-
-        results.ShouldNotBeEmpty();
-        results.ShouldAllBe(r => r.Status == QueryStatus.Illegal);
-    }
-
-    /// <summary>
-    /// One-liner: just username, no options, no DI, no LoadSitesAsync.
-    /// </summary>
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task SearchAsync_UsernameOnly_FindsResults()
     {
@@ -83,15 +86,13 @@ public class SherlockFactoryTests
         await foreach (var result in SherlockFactory.SearchAsync("testuser123"))
         {
             results.Add(result);
-            if (results.Count >= 5) break; // limit for test speed
+            if (results.Count >= 5) break;
         }
 
         results.ShouldNotBeEmpty();
     }
 
-    /// <summary>
-    /// Username + options lambda, no DI, no LoadSitesAsync.
-    /// </summary>
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task SearchAsync_WithOptions_FindsGitHub()
     {
@@ -111,9 +112,7 @@ public class SherlockFactoryTests
         github.Status.ShouldBe(QueryStatus.Claimed);
     }
 
-    /// <summary>
-    /// Demonstrates the absolute minimal usage: one line to search.
-    /// </summary>
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task MinimalUsageExample()
     {

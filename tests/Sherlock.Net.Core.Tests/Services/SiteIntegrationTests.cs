@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Sherlock.Net.Core;
 using Sherlock.Net.Core.Models;
 using Sherlock.Net.Core.Services;
 using Shouldly;
@@ -7,8 +8,10 @@ namespace Sherlock.Net.Core.Tests.Services;
 
 /// <summary>
 /// Integration tests that verify real site detection patterns from data.json.
-/// Each test validates that the detection mechanism (message, status_code, response_url)
-/// works correctly for a specific site with known existing and non-existing usernames.
+/// These tests make real HTTP requests and may be blocked by WAF (Cloudflare, etc.)
+/// in CI environments. They are excluded from CI via [Trait("Category", "Integration")].
+///
+/// Run locally with: dotnet test --filter "Category=Integration"
 ///
 /// To add a new site test:
 /// 1. Find the site entry in data.json for url, errorType, errorMsg, regexCheck
@@ -16,6 +19,7 @@ namespace Sherlock.Net.Core.Tests.Services;
 /// 3. Identify a username that does NOT exist on the site
 /// 4. Create a test method following the pattern below
 /// </summary>
+[Trait("Category", "Integration")]
 public class SiteIntegrationTests
 {
     private static readonly SherlockOptions DefaultOptions = new()
@@ -37,8 +41,8 @@ public class SiteIntegrationTests
     // Site: DeviantArt
     // URL pattern: https://www.deviantart.com/{}
     // Detection: errorType = "message", errorMsg = "Llama Not Found"
-    // Existing user: blue (https://www.deviantart.com/blue)
-    // Non-existing user: blueqqqqq (https://www.deviantart.com/blueqqqqq)
+    // Existing user: iulianalexe (https://www.deviantart.com/iulianalexe)
+    // Non-existing user: iulianalexexxx (https://www.deviantart.com/iulianalexexxx)
 
     private static readonly SiteData DeviantArt = new()
     {
@@ -56,11 +60,11 @@ public class SiteIntegrationTests
     {
         var checker = CreateChecker();
 
-        var result = await checker.CheckAsync(DeviantArt, "blue", DefaultOptions);
+        var result = await checker.CheckAsync(DeviantArt, "iulianalexe", DefaultOptions);
 
         result.Status.ShouldBe(QueryStatus.Claimed);
         result.SiteName.ShouldBe("DeviantArt");
-        result.ProfileUrl.ShouldBe("https://www.deviantart.com/blue");
+        result.ProfileUrl.ShouldBe("https://www.deviantart.com/iulianalexe");
     }
 
     [Fact]
@@ -68,7 +72,7 @@ public class SiteIntegrationTests
     {
         var checker = CreateChecker();
 
-        var result = await checker.CheckAsync(DeviantArt, "blueqqqqq", DefaultOptions);
+        var result = await checker.CheckAsync(DeviantArt, "iulianalexexxx", DefaultOptions);
 
         result.Status.ShouldBe(QueryStatus.Available);
         result.SiteName.ShouldBe("DeviantArt");
@@ -93,7 +97,7 @@ public class SiteIntegrationTests
     public async Task DeviantArt_ViaFactory_ExistingUser_ReturnsClaimed()
     {
         var results = new List<QueryResult>();
-        await foreach (var result in SherlockFactory.SearchAsync("blue", options =>
+        await foreach (var result in SherlockFactory.SearchAsync("iulianalexe", options =>
         {
             options.Timeout = TimeSpan.FromSeconds(15);
             options.SiteFilter = ["DeviantArt"];
@@ -105,14 +109,14 @@ public class SiteIntegrationTests
         results.ShouldNotBeEmpty();
         var deviantArt = results.First(r => r.SiteName == "DeviantArt");
         deviantArt.Status.ShouldBe(QueryStatus.Claimed);
-        deviantArt.ProfileUrl.ShouldBe("https://www.deviantart.com/blue");
+        deviantArt.ProfileUrl.ShouldBe("https://www.deviantart.com/iulianalexe");
     }
 
     [Fact]
     public async Task DeviantArt_ViaFactory_NonExistingUser_ReturnsAvailable()
     {
         var results = new List<QueryResult>();
-        await foreach (var result in SherlockFactory.SearchAsync("blueqqqqq", options =>
+        await foreach (var result in SherlockFactory.SearchAsync("iulianalexexxx", options =>
         {
             options.Timeout = TimeSpan.FromSeconds(15);
             options.SiteFilter = ["DeviantArt"];
