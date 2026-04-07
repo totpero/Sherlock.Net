@@ -6,7 +6,7 @@
 
     <!-- NuGet package -->
     <PackageId>Sherlock.Net</PackageId>
-    <Description>Core library for hunting social media accounts by username across 400+ networks. Provides models, services, and detection engine for the Sherlock.Net tool.</Description>
+    <Description>Reusable .NET library for hunting social media accounts by username across 400+ networks. Reference this package in your own projects to integrate username searching programmatically via SherlockFactory or AddSherlock() DI extension. Provides models, services, detection engine, and result exporters.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>

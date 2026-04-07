@@ -9,7 +9,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sherlock</ToolCommandName>
     <PackageId>Sherlock.Net.Cli</PackageId>
-    <Description>Hunt down social media accounts by username across 400+ networks. A .NET port of the Sherlock Project.</Description>
+    <Description>Command-line tool for hunting social media accounts by username across 400+ networks. Install globally with 'dotnet tool install --global Sherlock.Net.Cli' to use the 'sherlock' command in your terminal. A .NET port of the Sherlock Project.</Description>
   </PropertyGroup>
 
   <ItemGroup>
