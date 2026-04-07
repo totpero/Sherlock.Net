@@ -8,25 +8,13 @@ using Spectre.Console.Cli;
 
 namespace Sherlock.Net.Cli.Commands;
 
-public sealed class SearchCommand : AsyncCommand<SearchCommandSettings>
+public sealed class SearchCommand(
+    ISherlockService sherlockService,
+    ISiteDataProvider siteDataProvider,
+    IResultRenderer renderer,
+    IEnumerable<IResultExporter> exporters)
+    : AsyncCommand<SearchCommandSettings>
 {
-    private readonly ISherlockService _sherlockService;
-    private readonly ISiteDataProvider _siteDataProvider;
-    private readonly IResultRenderer _renderer;
-    private readonly IEnumerable<IResultExporter> _exporters;
-
-    public SearchCommand(
-        ISherlockService sherlockService,
-        ISiteDataProvider siteDataProvider,
-        IResultRenderer renderer,
-        IEnumerable<IResultExporter> exporters)
-    {
-        _sherlockService = sherlockService;
-        _siteDataProvider = siteDataProvider;
-        _renderer = renderer;
-        _exporters = exporters;
-    }
-
     protected override async Task<int> ExecuteAsync(CommandContext context, SearchCommandSettings settings, CancellationToken cancellationToken)
     {
         if (settings.NoColor)
@@ -34,7 +22,7 @@ public sealed class SearchCommand : AsyncCommand<SearchCommandSettings>
             AnsiConsole.Profile.Capabilities.ColorSystem = (ColorSystem)ColorSystemSupport.NoColors;
         }
 
-        _renderer.RenderBanner();
+        renderer.RenderBanner();
 
         var options = new SherlockOptions
         {
@@ -46,20 +34,20 @@ public sealed class SearchCommand : AsyncCommand<SearchCommandSettings>
             PrintAll = settings.PrintAll
         };
 
-        var sites = await _siteDataProvider.LoadSitesAsync(settings.DataSource, cancellationToken);
+        var sites = await siteDataProvider.LoadSitesAsync(settings.DataSource, cancellationToken);
 
         var usernames = ExpandUsernames(settings.Usernames);
 
         foreach (var username in usernames)
         {
-            _renderer.RenderSearchStart(username, sites.Count);
+            renderer.RenderSearchStart(username, sites.Count);
 
             var results = new List<QueryResult>();
 
-            await foreach (var result in _sherlockService.SearchAsync(username, sites, options, cancellationToken))
+            await foreach (var result in sherlockService.SearchAsync(username, sites, options, cancellationToken))
             {
                 results.Add(result);
-                _renderer.RenderResult(result, settings.PrintAll);
+                renderer.RenderResult(result, settings.PrintAll);
 
                 if (settings.Browse && result.Status == QueryStatus.Claimed)
                 {
@@ -75,7 +63,7 @@ public sealed class SearchCommand : AsyncCommand<SearchCommandSettings>
             }
 
             var claimedCount = results.Count(r => r.Status == QueryStatus.Claimed);
-            _renderer.RenderSearchComplete(username, claimedCount);
+            renderer.RenderSearchComplete(username, claimedCount);
 
             await ExportResultsAsync(username, results, settings, cancellationToken);
         }
@@ -119,7 +107,7 @@ public sealed class SearchCommand : AsyncCommand<SearchCommandSettings>
 
         foreach (var format in exportFormats)
         {
-            var exporter = _exporters.FirstOrDefault(e =>
+            var exporter = exporters.FirstOrDefault(e =>
                 e.FileExtension.Equals(format, StringComparison.OrdinalIgnoreCase));
 
             if (exporter is null)
