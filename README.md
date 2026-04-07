@@ -1,6 +1,6 @@
 <p align="center">
   <br>
-  <img src="https://user-images.githubusercontent.com/27065646/53551960-ae4dff80-3b3a-11e9-9075-cef786c69364.png" width="200"/>
+  <img src="https://raw.githubusercontent.com/totpero/Sherlock.Net/main/icon.png" width="200"/>
   <br>
   <b>Sherlock.Net</b>
   <br>
