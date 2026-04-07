@@ -14,6 +14,10 @@
   <a href="https://dotnet.microsoft.com/download/dotnet/10.0"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10.0"></a>
   <a href="https://github.com/totpero/Sherlock.Net/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License: Apache 2.0"></a>
   <a href="https://totpero.github.io/Sherlock.Net/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-brightgreen" alt="Documentation"></a>
+  <br>
+  <a href="https://www.nuget.org/packages/Sherlock.Net"><img src="https://img.shields.io/nuget/v/Sherlock.Net?label=Sherlock.Net&logo=nuget" alt="NuGet Sherlock.Net"></a>
+  <a href="https://www.nuget.org/packages/Sherlock.Net.Cli"><img src="https://img.shields.io/nuget/v/Sherlock.Net.Cli?label=Sherlock.Net.Cli&logo=nuget" alt="NuGet Sherlock.Net.Cli"></a>
+  <a href="https://www.nuget.org/packages/Sherlock.Net"><img src="https://img.shields.io/nuget/dt/Sherlock.Net?label=downloads&logo=nuget" alt="NuGet Downloads"></a>
 </p>
 
 ---
