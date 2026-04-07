@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherlock.Net - Username Hunter for .NET</title>
+    <meta name="description" content="Hunt down social media accounts by username across 400+ social networks. A .NET port of the Sherlock Project.">
+    <link rel="icon" href="https://user-images.githubusercontent.com/27065646/53551960-ae4dff80-3b3a-11e9-9075-cef786c69364.png">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --purple: #bc8cff;
+            --orange: #d29922;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+
+        .hero img {
+            width: 120px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hero h1 span { color: var(--accent); }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .badges img { height: 24px; }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { text-decoration: none; opacity: 0.85; }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* Terminal */
+        .terminal-section { padding: 40px 0 60px; }
+
+        .terminal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .terminal-bar {
+            background: #1c2128;
+            padding: 10px 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.green { background: #28c840; }
+
+        .terminal-body {
+            padding: 20px 24px;
+            font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .terminal-body .prompt { color: var(--green); }
+        .terminal-body .cmd { color: var(--text); }
+        .terminal-body .result { color: var(--green); }
+        .terminal-body .dim { color: var(--text-muted); }
+        .terminal-body .accent { color: var(--accent); }
+
+        /* Features */
+        .features {
+            padding: 60px 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 48px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .feature-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Install */
+        .install {
+            padding: 60px 0;
+        }
+
+        .install h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 48px;
+        }
+
+        .install-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+        }
+
+        .install-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .install-card h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .install-card .subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .code-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'SF Mono', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--border);
+            color: var(--text-muted);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .code-block .copy-btn:hover {
+            background: var(--text-muted);
+            color: var(--bg);
+        }
+
+        /* Usage */
+        .usage {
+            padding: 60px 0;
+        }
+
+        .usage h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 48px;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .usage-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .usage-card h3 {
+            font-size: 0.95rem;
+            color: var(--purple);
+            margin-bottom: 12px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a { color: var(--text-muted); }
+        footer a:hover { color: var(--accent); }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+            .install-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="container">
+        <img src="https://user-images.githubusercontent.com/27065646/53551960-ae4dff80-3b3a-11e9-9075-cef786c69364.png" alt="Sherlock.Net">
+        <h1>Sherlock<span>.Net</span></h1>
+        <p>Hunt down social media accounts by username across 400+ social networks</p>
+        <div class="badges">
+            <img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10.0">
+            <img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License">
+            <img src="https://img.shields.io/badge/sites-400+-green" alt="400+ sites">
+        </div>
+        <div class="cta-group">
+            <a href="https://github.com/totpero/Sherlock.Net" class="btn btn-primary">View on GitHub</a>
+            <a href="https://www.nuget.org/packages/Sherlock.Net" class="btn btn-secondary">NuGet Package</a>
+        </div>
+    </div>
+</section>
+
+<section class="terminal-section">
+    <div class="container">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+            </div>
+            <div class="terminal-body">
+                <div><span class="prompt">$</span> <span class="cmd">dotnet tool install --global Sherlock.Net.Cli</span></div>
+                <div class="dim">Tool 'sherlock.net.cli' was successfully installed.</div>
+                <br>
+                <div><span class="prompt">$</span> <span class="cmd">sherlock johndoe</span></div>
+                <div class="accent">
+                    &nbsp;&nbsp;____&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;_&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_<br>
+                </div>
+                <div><span class="dim">[*] Checking username johndoe on 478 sites</span></div>
+                <div><span class="result">[+] GitHub: https://www.github.com/johndoe</span></div>
+                <div><span class="result">[+] Twitter: https://twitter.com/johndoe</span></div>
+                <div><span class="result">[+] Instagram: https://www.instagram.com/johndoe</span></div>
+                <div><span class="result">[+] Reddit: https://www.reddit.com/user/johndoe</span></div>
+                <div class="dim">...</div>
+                <div><span class="dim">[*] Search completed: 42 account(s) found</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">&#9889;</div>
+                <h3>Parallel Async Requests</h3>
+                <p>Searches 400+ sites concurrently using Channel&lt;T&gt; and SemaphoreSlim. Results stream as they arrive.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128230;</div>
+                <h3>CLI Tool & Library</h3>
+                <p>Install as a global dotnet tool, or reference Sherlock.Net.Core as a NuGet package in your own projects.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#127760;</div>
+                <h3>Cross-Platform</h3>
+                <p>Runs on Windows, Linux, and macOS. Publish as self-contained executable for zero-dependency deployment.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128373;</div>
+                <h3>Proxy & Tor Support</h3>
+                <p>Route through SOCKS5 proxies or Tor for anonymous searching. Native .NET WebProxy support.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128202;</div>
+                <h3>Multiple Export Formats</h3>
+                <p>Export results to TXT, CSV, or JSON. Integrate with your existing OSINT workflow.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128737;</div>
+                <h3>WAF Detection</h3>
+                <p>Detects Cloudflare, PerimeterX, Akamai, and AWS CloudFront blocks to avoid false positives.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="install">
+    <div class="container">
+        <h2>Get Started</h2>
+        <div class="install-grid">
+            <div class="install-card">
+                <h3>CLI Tool</h3>
+                <p class="subtitle">Install globally and use the sherlock command in your terminal</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    dotnet tool install --global Sherlock.Net.Cli
+                </div>
+            </div>
+            <div class="install-card">
+                <h3>Library (NuGet)</h3>
+                <p class="subtitle">Reference in your .NET project for programmatic username searching</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    dotnet add package Sherlock.Net
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="usage">
+    <div class="container">
+        <h2>Usage Examples</h2>
+        <div class="usage-grid">
+            <div class="usage-card">
+                <h3>Search a username</h3>
+                <div class="code-block">sherlock johndoe</div>
+            </div>
+            <div class="usage-card">
+                <h3>Multiple usernames</h3>
+                <div class="code-block">sherlock john jane alex</div>
+            </div>
+            <div class="usage-card">
+                <h3>Filter by site</h3>
+                <div class="code-block">sherlock --site GitHub --site Twitter johndoe</div>
+            </div>
+            <div class="usage-card">
+                <h3>Export to CSV</h3>
+                <div class="code-block">sherlock --csv -o results/ johndoe</div>
+            </div>
+            <div class="usage-card">
+                <h3>Use with Tor</h3>
+                <div class="code-block">sherlock --proxy socks5://127.0.0.1:9050 johndoe</div>
+            </div>
+            <div class="usage-card">
+                <h3>Minimal C# code</h3>
+                <div class="code-block">await foreach (var r in SherlockFactory.SearchAsync("johndoe"))<br>&nbsp;&nbsp;Console.WriteLine($"{r.SiteName}: {r.ProfileUrl}");</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <p>
+            <a href="https://github.com/totpero/Sherlock.Net">GitHub</a> &middot;
+            <a href="https://www.nuget.org/packages/Sherlock.Net">NuGet</a> &middot;
+            <a href="https://github.com/totpero/Sherlock.Net/issues">Issues</a>
+        </p>
+        <p style="margin-top: 12px;">
+            A .NET port of <a href="https://github.com/sherlock-project/sherlock">Sherlock Project</a>.
+            Licensed under Apache 2.0.
+        </p>
+    </div>
+</footer>
+
+<script>
+function copyCode(btn) {
+    const block = btn.parentElement;
+    const text = block.textContent.replace('Copy', '').trim();
+    navigator.clipboard.writeText(text);
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+}
+</script>
+
+</body>
+</html>
