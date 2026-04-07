@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <Version>0.16.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <!-- NuGet package metadata -->
     <Authors>totpero</Authors>

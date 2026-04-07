@@ -76,7 +76,15 @@ jobs:
             --api-key ${{ secrets.NUGET_API_KEY }} \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
+          dotnet nuget push ./nupkgs/Sherlock.Net.${{ needs.check-version.outputs.version }}.snupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
           dotnet nuget push ./nupkgs/Sherlock.Net.Cli.${{ needs.check-version.outputs.version }}.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+          dotnet nuget push ./nupkgs/Sherlock.Net.Cli.${{ needs.check-version.outputs.version }}.snupkg \
             --api-key ${{ secrets.NUGET_API_KEY }} \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate
