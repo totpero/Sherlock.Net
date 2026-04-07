@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <RootNamespace>Sherlock.Net.Core</RootNamespace>
-    <TargetFramework>net10.0</TargetFramework>
 
     <!-- NuGet package -->
     <PackageId>Sherlock.Net</PackageId>

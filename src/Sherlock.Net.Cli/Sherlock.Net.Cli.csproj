@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Sherlock.Net.Cli</RootNamespace>
-    <TargetFramework>net10.0</TargetFramework>
 
     <!-- NuGet .NET tool -->
     <PackAsTool>true</PackAsTool>

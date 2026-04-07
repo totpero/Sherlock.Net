@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://dotnet.microsoft.com/download/dotnet/10.0"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10.0"></a>
+  <a href="https://dotnet.microsoft.com/download"><img src="https://img.shields.io/badge/.NET-8.0%20|%209.0%20|%2010.0-512BD4?logo=dotnet" alt=".NET 8.0 | 9.0 | 10.0"></a>
   <a href="https://github.com/totpero/Sherlock.Net/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License: Apache 2.0"></a>
   <a href="https://totpero.github.io/Sherlock.Net/"><img src="https://img.shields.io/badge/docs-GitHub%20Pages-brightgreen" alt="Documentation"></a>
   <br>
@@ -39,7 +39,8 @@
 
 ### Prerequisites
 
-- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or later
+- [.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0), [.NET 9.0](https://dotnet.microsoft.com/download/dotnet/9.0), or [.NET 10.0](https://dotnet.microsoft.com/download/dotnet/10.0) SDK
+- Supported platforms: Windows, Linux, macOS
 
 ### Install as .NET tool (recommended)
 
