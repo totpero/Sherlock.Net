@@ -5,7 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
 
     <!-- NuGet package -->
-    <PackageId>Sherlock.Net.Core</PackageId>
+    <PackageId>Sherlock.Net</PackageId>
     <Description>Core library for hunting social media accounts by username across 400+ networks. Provides models, services, and detection engine for the Sherlock.Net tool.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>

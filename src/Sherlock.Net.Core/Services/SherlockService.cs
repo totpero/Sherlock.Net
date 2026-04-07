@@ -56,7 +56,7 @@ public sealed class SherlockService(ISiteChecker siteChecker) : ISherlockService
             {
                 channel.Writer.Complete(caughtException);
             }
-        });
+        }, cancellationToken);
 
         await foreach (var result in channel.Reader.ReadAllAsync(cancellationToken))
         {

@@ -230,7 +230,49 @@ Reference `Sherlock.Net.Core` in your project to integrate username searching pr
 dotnet add package Sherlock.Net.Core
 ```
 
-### Basic setup
+### Minimal usage (no DI container)
+
+The simplest way — one static call, no `ServiceCollection`, no setup:
+
+```csharp
+using Sherlock.Net.Core;
+using Sherlock.Net.Core.Models;
+
+// Search across all 400+ sites with a single call
+await foreach (var result in SherlockFactory.SearchAsync("johndoe"))
+{
+    if (result.Status == QueryStatus.Claimed)
+        Console.WriteLine($"[+] {result.SiteName}: {result.ProfileUrl}");
+}
+```
+
+With options:
+
+```csharp
+await foreach (var result in SherlockFactory.SearchAsync("johndoe", options =>
+{
+    options.Timeout = TimeSpan.FromSeconds(30);
+    options.MaxConcurrency = 10;
+    options.SiteFilter = ["GitHub", "Twitter", "Instagram"];
+}))
+{
+    if (result.Status == QueryStatus.Claimed)
+        Console.WriteLine($"[+] {result.SiteName}: {result.ProfileUrl}");
+}
+```
+
+If you need more control (e.g., custom data.json source), use `SherlockFactory.Create()`:
+
+```csharp
+var (sherlock, siteProvider) = SherlockFactory.Create();
+var sites = await siteProvider.LoadSitesAsync("path/to/custom-data.json");
+await foreach (var result in sherlock.SearchAsync("johndoe", sites, new SherlockOptions()))
+{
+    // ...
+}
+```
+
+### With DI container (`AddSherlock`)
 
 Register all services with a single call to `AddSherlock()`:
 
