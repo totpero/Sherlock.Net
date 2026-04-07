@@ -41,8 +41,8 @@ public class SiteIntegrationTests
     // Site: DeviantArt
     // URL pattern: https://www.deviantart.com/{}
     // Detection: errorType = "message", errorMsg = "Llama Not Found"
-    // Existing user: iulianalexe (https://www.deviantart.com/iulianalexe)
-    // Non-existing user: iulianalexexxx (https://www.deviantart.com/iulianalexexxx)
+    // Existing user: blue (https://www.deviantart.com/blue)
+    // Non-existing user: blueqqqqq (https://www.deviantart.com/blueqqqqq)
 
     private static readonly SiteData DeviantArt = new()
     {
@@ -60,11 +60,11 @@ public class SiteIntegrationTests
     {
         var checker = CreateChecker();
 
-        var result = await checker.CheckAsync(DeviantArt, "iulianalexe", DefaultOptions);
+        var result = await checker.CheckAsync(DeviantArt, "blue", DefaultOptions);
 
         result.Status.ShouldBe(QueryStatus.Claimed);
         result.SiteName.ShouldBe("DeviantArt");
-        result.ProfileUrl.ShouldBe("https://www.deviantart.com/iulianalexe");
+        result.ProfileUrl.ShouldBe("https://www.deviantart.com/blue");
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class SiteIntegrationTests
     {
         var checker = CreateChecker();
 
-        var result = await checker.CheckAsync(DeviantArt, "iulianalexexxx", DefaultOptions);
+        var result = await checker.CheckAsync(DeviantArt, "blueqqqqq", DefaultOptions);
 
         result.Status.ShouldBe(QueryStatus.Available);
         result.SiteName.ShouldBe("DeviantArt");
@@ -97,7 +97,7 @@ public class SiteIntegrationTests
     public async Task DeviantArt_ViaFactory_ExistingUser_ReturnsClaimed()
     {
         var results = new List<QueryResult>();
-        await foreach (var result in SherlockFactory.SearchAsync("iulianalexe", options =>
+        await foreach (var result in SherlockFactory.SearchAsync("blue", options =>
         {
             options.Timeout = TimeSpan.FromSeconds(15);
             options.SiteFilter = ["DeviantArt"];
@@ -109,14 +109,14 @@ public class SiteIntegrationTests
         results.ShouldNotBeEmpty();
         var deviantArt = results.First(r => r.SiteName == "DeviantArt");
         deviantArt.Status.ShouldBe(QueryStatus.Claimed);
-        deviantArt.ProfileUrl.ShouldBe("https://www.deviantart.com/iulianalexe");
+        deviantArt.ProfileUrl.ShouldBe("https://www.deviantart.com/blue");
     }
 
     [Fact]
     public async Task DeviantArt_ViaFactory_NonExistingUser_ReturnsAvailable()
     {
         var results = new List<QueryResult>();
-        await foreach (var result in SherlockFactory.SearchAsync("iulianalexexxx", options =>
+        await foreach (var result in SherlockFactory.SearchAsync("blueqqqqq", options =>
         {
             options.Timeout = TimeSpan.FromSeconds(15);
             options.SiteFilter = ["DeviantArt"];
