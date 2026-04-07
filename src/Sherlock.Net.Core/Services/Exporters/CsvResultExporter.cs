@@ -16,8 +16,8 @@ public sealed class CsvResultExporter : IResultExporter
 
         foreach (var result in results)
         {
-            var responseTime = result.QueryTime?.TotalMilliseconds.ToString("F0", CultureInfo.InvariantCulture) ?? "";
-            var statusCode = result.HttpStatusCode?.ToString() ?? "";
+            var responseTime = result.QueryTime?.TotalMilliseconds.ToString("F0", CultureInfo.InvariantCulture) ?? string.Empty;
+            var statusCode = result.HttpStatusCode?.ToString() ?? string.Empty;
             lines.Add($"{Escape(result.SiteName)},{Escape(result.ProfileUrl)},{result.Status},{statusCode},{responseTime}");
         }
 

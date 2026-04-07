@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://dotnet.microsoft.com/download/dotnet/10.0"><img src="https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet" alt=".NET 10.0"></a>
-  <a href="https://github.com/totpero/Sherlock.Net/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
+  <a href="https://github.com/totpero/Sherlock.Net/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License: Apache 2.0"></a>
 </p>
 
 ---
@@ -36,6 +36,34 @@
 
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or later
 
+### Install as .NET tool (recommended)
+
+Install globally as a .NET tool — this makes the `sherlock` command available everywhere in your terminal:
+
+```bash
+dotnet tool install --global Sherlock.Net
+```
+
+After installation, simply run:
+
+```bash
+sherlock user123
+```
+
+To update to the latest version:
+
+```bash
+dotnet tool update --global Sherlock.Net
+```
+
+To uninstall:
+
+```bash
+dotnet tool uninstall --global Sherlock.Net
+```
+
+> **Note:** Make sure `~/.dotnet/tools` (Linux/macOS) or `%USERPROFILE%\.dotnet\tools` (Windows) is in your `PATH`. The .NET SDK adds this automatically on first tool install, but you may need to restart your terminal.
+
 ### Build from source
 
 ```bash
@@ -44,7 +72,7 @@ cd Sherlock.Net
 dotnet build
 ```
 
-### Run directly
+Run directly from source (without installing):
 
 ```bash
 dotnet run --project src/Sherlock.Net.Cli -- <username>
@@ -56,6 +84,24 @@ dotnet run --project src/Sherlock.Net.Cli -- <username>
 dotnet publish src/Sherlock.Net.Cli -c Release -r win-x64 --self-contained
 dotnet publish src/Sherlock.Net.Cli -c Release -r linux-x64 --self-contained
 dotnet publish src/Sherlock.Net.Cli -c Release -r osx-arm64 --self-contained
+```
+
+---
+
+## Quick Start
+
+```bash
+# Install the tool globally
+dotnet tool install --global Sherlock.Net
+
+# Search for a username across 400+ sites
+sherlock johndoe
+
+# Search multiple usernames and export to CSV
+sherlock --csv johndoe janedoe
+
+# Search only on GitHub and Twitter
+sherlock --site GitHub --site Twitter johndoe
 ```
 
 ---
@@ -180,13 +226,22 @@ Each site in `data.json` uses one of three detection strategies:
 
 Reference `Sherlock.Net.Core` in your project to integrate username searching programmatically:
 
+```bash
+dotnet add package Sherlock.Net.Core
+```
+
+### Basic setup
+
+Register all services with a single call to `AddSherlock()`:
+
 ```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Sherlock.Net.Core;
+using Sherlock.Net.Core.Models;
+using Sherlock.Net.Core.Services;
+
 var services = new ServiceCollection();
-services.AddHttpClient("sherlock");
-services.AddSingleton<ISiteDataProvider, SiteDataProvider>();
-services.AddSingleton<IWafDetector, WafDetector>();
-services.AddSingleton<ISiteChecker, SiteChecker>();
-services.AddSingleton<ISherlockService, SherlockService>();
+services.AddSherlock();
 
 var provider = services.BuildServiceProvider();
 var siteDataProvider = provider.GetRequiredService<ISiteDataProvider>();
@@ -195,11 +250,59 @@ var sherlockService = provider.GetRequiredService<ISherlockService>();
 var sites = await siteDataProvider.LoadSitesAsync();
 var options = new SherlockOptions { MaxConcurrency = 20 };
 
-await foreach (var result in sherlockService.SearchAsync("username", sites, options))
+await foreach (var result in sherlockService.SearchAsync("johndoe", sites, options))
 {
     if (result.Status == QueryStatus.Claimed)
         Console.WriteLine($"[+] {result.SiteName}: {result.ProfileUrl}");
 }
+```
+
+### Custom configuration
+
+Use the lambda overload to configure defaults:
+
+```csharp
+services.AddSherlock(options =>
+{
+    options.UserAgent = "MyApp/1.0";
+    options.Timeout = TimeSpan.FromSeconds(30);
+    options.MaxConcurrency = 10;
+    options.ProxyUrl = "socks5://127.0.0.1:9050";
+    options.IncludeNsfw = false;
+});
+```
+
+### ASP.NET Core / Hosted services
+
+`AddSherlock()` integrates with standard .NET dependency injection:
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSherlock(options =>
+{
+    options.Timeout = TimeSpan.FromSeconds(15);
+    options.MaxConcurrency = 5;
+});
+
+var app = builder.Build();
+
+app.MapGet("/search/{username}", async (string username,
+    ISiteDataProvider siteDataProvider, ISherlockService sherlockService) =>
+{
+    var sites = await siteDataProvider.LoadSitesAsync();
+    var results = new List<object>();
+
+    await foreach (var result in sherlockService.SearchAsync(username, sites, new SherlockOptions()))
+    {
+        if (result.Status == QueryStatus.Claimed)
+            results.Add(new { result.SiteName, result.ProfileUrl });
+    }
+
+    return Results.Ok(results);
+});
+
+app.Run();
 ```
 
 ---
@@ -220,4 +323,4 @@ This project is a .NET port of [Sherlock](https://github.com/sherlock-project/sh
 
 ## License
 
-MIT
+Apache 2.0

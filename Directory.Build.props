@@ -4,12 +4,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <Version>0.16.0</Version>
 
     <!-- NuGet package metadata -->
     <Authors>totpero</Authors>
     <Company>totpero</Company>
     <Copyright>Copyright (c) totpero</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/totpero/Sherlock.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/totpero/Sherlock.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Sherlock.Net.Core;
 using Sherlock.Net.Core.Models;
 using Sherlock.Net.Core.Services;
 using Shouldly;
@@ -12,8 +13,7 @@ public class SiteDataProviderTests
     public SiteDataProviderTests()
     {
         var services = new ServiceCollection();
-        services.AddHttpClient("sherlock");
-        services.AddSingleton<ISiteDataProvider, SiteDataProvider>();
+        services.AddSherlock();
         var sp = services.BuildServiceProvider();
         _provider = sp.GetRequiredService<ISiteDataProvider>();
     }

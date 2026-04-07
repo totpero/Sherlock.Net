@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>Sherlock.Net.Core</RootNamespace>
@@ -6,7 +6,6 @@
 
     <!-- NuGet package -->
     <PackageId>Sherlock.Net.Core</PackageId>
-    <Version>1.0.0</Version>
     <Description>Core library for hunting social media accounts by username across 400+ networks. Provides models, services, and detection engine for the Sherlock.Net tool.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>

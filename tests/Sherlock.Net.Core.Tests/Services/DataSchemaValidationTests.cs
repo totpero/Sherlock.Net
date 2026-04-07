@@ -2,26 +2,28 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Json.Schema;
+using Sherlock.Net.Core;
+using Sherlock.Net.Core.Models;
 using Shouldly;
 
 namespace Sherlock.Net.Core.Tests.Services;
 
 public class DataSchemaValidationTests
 {
+    private static readonly Assembly CoreAssembly = typeof(SiteData).Assembly;
+
     private readonly string _dataJson;
     private readonly string _schemaJson;
 
     public DataSchemaValidationTests()
     {
-        var assembly = typeof(Models.SiteData).Assembly;
-
-        _dataJson = LoadEmbeddedResource(assembly, "Sherlock.Net.Core.Resources.data.json");
-        _schemaJson = LoadEmbeddedResource(assembly, "Sherlock.Net.Core.Resources.data.schema.json");
+        _dataJson = LoadEmbeddedResource(SherlockDefaults.DataResourceName);
+        _schemaJson = LoadEmbeddedResource(SherlockDefaults.SchemaResourceName);
     }
 
-    private static string LoadEmbeddedResource(Assembly assembly, string resourceName)
+    private static string LoadEmbeddedResource(string resourceName)
     {
-        using var stream = assembly.GetManifestResourceStream(resourceName)
+        using var stream = CoreAssembly.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException($"Resource '{resourceName}' not found.");
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
@@ -53,9 +55,8 @@ public class DataSchemaValidationTests
     public void DataJson_AllSitesHaveRequiredFields()
     {
         var doc = JsonDocument.Parse(_dataJson);
-        var root = doc.RootElement;
 
-        foreach (var property in root.EnumerateObject())
+        foreach (var property in doc.RootElement.EnumerateObject())
         {
             if (property.Name.StartsWith('$'))
                 continue;
@@ -90,12 +91,12 @@ public class DataSchemaValidationTests
             var siteName = property.Name;
             var site = property.Value;
 
-            var url = site.GetProperty("url").GetString() ?? "";
+            var url = site.GetProperty("url").GetString() ?? string.Empty;
             var hasPlaceholder = url.Contains("{}");
 
             if (!hasPlaceholder && site.TryGetProperty("urlProbe", out var probeEl))
             {
-                hasPlaceholder = (probeEl.GetString() ?? "").Contains("{}");
+                hasPlaceholder = (probeEl.GetString() ?? string.Empty).Contains("{}");
             }
 
             if (!hasPlaceholder && site.TryGetProperty("request_payload", out var payloadEl))

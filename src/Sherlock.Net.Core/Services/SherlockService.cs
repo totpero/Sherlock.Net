@@ -4,15 +4,8 @@ using Sherlock.Net.Core.Models;
 
 namespace Sherlock.Net.Core.Services;
 
-public sealed class SherlockService : ISherlockService
+public sealed class SherlockService(ISiteChecker siteChecker) : ISherlockService
 {
-    private readonly ISiteChecker _siteChecker;
-
-    public SherlockService(ISiteChecker siteChecker)
-    {
-        _siteChecker = siteChecker;
-    }
-
     public async IAsyncEnumerable<QueryResult> SearchAsync(
         string username,
         IReadOnlyList<SiteData> sites,
@@ -44,7 +37,7 @@ public sealed class SherlockService : ISherlockService
                     await semaphore.WaitAsync(cancellationToken);
                     try
                     {
-                        var result = await _siteChecker.CheckAsync(site, username, options, cancellationToken);
+                        var result = await siteChecker.CheckAsync(site, username, options, cancellationToken);
                         await channel.Writer.WriteAsync(result, cancellationToken);
                     }
                     finally

@@ -6,18 +6,10 @@ using Sherlock.Net.Core.Models;
 
 namespace Sherlock.Net.Core.Services;
 
-public sealed class SiteChecker : ISiteChecker
+public sealed class SiteChecker(IHttpClientFactory httpClientFactory, IWafDetector wafDetector)
+    : ISiteChecker
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IWafDetector _wafDetector;
-
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
-
-    public SiteChecker(IHttpClientFactory httpClientFactory, IWafDetector wafDetector)
-    {
-        _httpClientFactory = httpClientFactory;
-        _wafDetector = wafDetector;
-    }
 
     public async Task<QueryResult> CheckAsync(SiteData site, string username, SherlockOptions options, CancellationToken cancellationToken = default)
     {
@@ -118,7 +110,7 @@ public sealed class SiteChecker : ISiteChecker
                 var statusCode = (int)response.StatusCode;
 
                 // WAF check
-                if (_wafDetector.IsWafResponse(body))
+                if (wafDetector.IsWafResponse(body))
                 {
                     return MakeResult(username, site, profileUrl, QueryStatus.Waf,
                         queryTime: sw.Elapsed, httpStatusCode: statusCode,
@@ -159,14 +151,26 @@ public sealed class SiteChecker : ISiteChecker
 
     private HttpClient CreateHttpClient(SherlockOptions options)
     {
+        HttpClient client;
+
         if (!string.IsNullOrEmpty(options.ProxyUrl))
         {
             // Proxy requires a custom handler - can't use factory's default
             var handler = CreateHandler(options, allowRedirects: true);
-            return new HttpClient(handler, disposeHandler: true);
+            client = new HttpClient(handler, disposeHandler: true);
+        }
+        else
+        {
+            client = httpClientFactory.CreateClient(SherlockDefaults.HttpClientName);
         }
 
-        return _httpClientFactory.CreateClient("sherlock");
+        // Set default User-Agent if not configured by the factory
+        if (client.DefaultRequestHeaders.UserAgent.Count == 0)
+        {
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(SherlockDefaults.UserAgent);
+        }
+
+        return client;
     }
 
     private static QueryStatus EvaluateResponse(SiteData site, HttpResponseMessage response, string body,
@@ -286,7 +290,7 @@ public sealed class SiteChecker : ISiteChecker
         switch (element.ValueKind)
         {
             case JsonValueKind.String:
-                var str = element.GetString() ?? "";
+                var str = element.GetString() ?? string.Empty;
                 var replaced = str.Replace("{}", username);
                 return JsonDocument.Parse($"\"{JsonEncodedText.Encode(replaced)}\"").RootElement.Clone();
 

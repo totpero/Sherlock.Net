@@ -22,7 +22,7 @@ public sealed class SiteDataProvider(IHttpClientFactory httpClientFactory) : ISi
     private static async Task<string> LoadFromEmbeddedResourceAsync(CancellationToken cancellationToken)
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var resourceName = "Sherlock.Net.Core.Resources.data.json";
+        var resourceName = SherlockDefaults.DataResourceName;
 
         await using var stream = assembly.GetManifestResourceStream(resourceName)
             ?? throw new InvalidOperationException($"Embedded resource '{resourceName}' not found.");
@@ -33,7 +33,7 @@ public sealed class SiteDataProvider(IHttpClientFactory httpClientFactory) : ISi
 
     private async Task<string> LoadFromUrlAsync(string url, CancellationToken cancellationToken)
     {
-        var client = httpClientFactory.CreateClient("sherlock");
+        var client = httpClientFactory.CreateClient(SherlockDefaults.HttpClientName);
         return await client.GetStringAsync(url, cancellationToken);
     }
 

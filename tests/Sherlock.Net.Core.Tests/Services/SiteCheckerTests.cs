@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Sherlock.Net.Core;
 using Sherlock.Net.Core.Models;
 using Sherlock.Net.Core.Services;
 using Shouldly;
@@ -66,12 +67,11 @@ public class SiteCheckerTests
         detector.IsWafResponse(body).ShouldBeFalse();
     }
 
-    private static SiteChecker CreateChecker()
+    private static ISiteChecker CreateChecker()
     {
         var services = new ServiceCollection();
-        services.AddHttpClient("sherlock");
+        services.AddSherlock();
         var sp = services.BuildServiceProvider();
-        var factory = sp.GetRequiredService<IHttpClientFactory>();
-        return new SiteChecker(factory, new WafDetector());
+        return sp.GetRequiredService<ISiteChecker>();
     }
 }
