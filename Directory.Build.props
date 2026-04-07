@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <Version>0.16.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
     <!-- NuGet package metadata -->
     <Authors>totpero</Authors>

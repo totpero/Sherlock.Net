@@ -41,7 +41,7 @@
 Install globally as a .NET tool — this makes the `sherlock` command available everywhere in your terminal:
 
 ```bash
-dotnet tool install --global Sherlock.Net
+dotnet tool install --global Sherlock.Net.Cli
 ```
 
 After installation, simply run:
@@ -53,13 +53,13 @@ sherlock user123
 To update to the latest version:
 
 ```bash
-dotnet tool update --global Sherlock.Net
+dotnet tool update --global Sherlock.Net.Cli
 ```
 
 To uninstall:
 
 ```bash
-dotnet tool uninstall --global Sherlock.Net
+dotnet tool uninstall --global Sherlock.Net.Cli
 ```
 
 > **Note:** Make sure `~/.dotnet/tools` (Linux/macOS) or `%USERPROFILE%\.dotnet\tools` (Windows) is in your `PATH`. The .NET SDK adds this automatically on first tool install, but you may need to restart your terminal.
@@ -92,7 +92,7 @@ dotnet publish src/Sherlock.Net.Cli -c Release -r osx-arm64 --self-contained
 
 ```bash
 # Install the tool globally
-dotnet tool install --global Sherlock.Net
+dotnet tool install --global Sherlock.Net.Cli
 
 # Search for a username across 400+ sites
 sherlock johndoe

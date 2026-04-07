@@ -8,7 +8,7 @@
     <!-- NuGet .NET tool -->
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sherlock</ToolCommandName>
-    <PackageId>Sherlock.Net</PackageId>
+    <PackageId>Sherlock.Net.Cli</PackageId>
     <Description>Hunt down social media accounts by username across 400+ networks. A .NET port of the Sherlock Project.</Description>
   </PropertyGroup>
 
