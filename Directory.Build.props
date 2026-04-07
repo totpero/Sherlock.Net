@@ -12,7 +12,7 @@
     <Company>totpero</Company>
     <Copyright>Copyright (c) totpero</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/totpero/Sherlock.Net</PackageProjectUrl>
+    <PackageProjectUrl>https://totpero.github.io/Sherlock.Net/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/totpero/Sherlock.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>sherlock;osint;username;social-media;reconnaissance</PackageTags>
