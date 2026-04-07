@@ -1,0 +1,50 @@
+name: False negative
+description: Report a site that is returning false negative results (username exists but not detected)
+title: "False negative for: "
+labels: ["false negative"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit **one site per report** for faster resolution.
+        Ensure that the site name is in the title of your issue.
+  - type: input
+    id: site-name
+    attributes:
+      label: Site name
+      description: Which site is failing to detect an existing username?
+      placeholder: GitHub
+    validations:
+      required: true
+  - type: input
+    id: username
+    attributes:
+      label: Username tested
+      description: What existing username was not detected?
+      placeholder: existinguser
+    validations:
+      required: true
+  - type: input
+    id: profile-url
+    attributes:
+      label: Actual profile URL
+      description: Provide a direct link to the existing profile.
+      placeholder: https://www.github.com/existinguser
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: If you know why false negatives occur or noticed any patterns, please explain.
+      placeholder: The site recently changed their error page and no longer shows "User not found"...
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

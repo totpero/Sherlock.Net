@@ -1,0 +1,50 @@
+name: False positive
+description: Report a site that is returning false positive results (username detected but doesn't actually exist)
+title: "False positive for: "
+labels: ["false positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit **one site per report** for faster resolution.
+        Ensure that the site name is in the title of your issue.
+  - type: input
+    id: site-name
+    attributes:
+      label: Site name
+      description: Which site is returning false positives?
+      placeholder: GitHub
+    validations:
+      required: true
+  - type: input
+    id: username
+    attributes:
+      label: Username tested
+      description: What username did you search that returned a false positive?
+      placeholder: nonexistentuser12345
+    validations:
+      required: true
+  - type: input
+    id: profile-url
+    attributes:
+      label: Profile URL returned
+      description: What URL did Sherlock.Net report as claimed?
+      placeholder: https://www.github.com/nonexistentuser12345
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: If you know why the false positive occurs, or noticed any patterns, please explain.
+      placeholder: The site returns a 200 status code even for non-existing users because...
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

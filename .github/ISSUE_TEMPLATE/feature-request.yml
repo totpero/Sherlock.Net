@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest a new feature or improvement for Sherlock.Net
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use a clear and concise title that describes the feature you are requesting.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature you are requesting and why it would be useful.
+      placeholder: I'd like Sherlock.Net to be able to...
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      description: Which part of Sherlock.Net does this feature apply to?
+      options:
+        - CLI tool (Sherlock.Net.Cli)
+        - Core library (Sherlock.Net.Core)
+        - Both
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any alternative approaches?
+      placeholder: I've considered using X but it doesn't work because...
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

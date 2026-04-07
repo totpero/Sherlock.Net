@@ -1,0 +1,64 @@
+name: Request a new website
+description: Request that Sherlock.Net add support for a new website
+title: "Requesting support for: "
+labels: ["site support request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ensure that the site name is in the title of your request.
+        Requests without this information will be **closed**.
+  - type: input
+    id: site-url
+    attributes:
+      label: Site URL
+      description: |
+        What is the URL of the website indicated in your title?
+        Websites sometimes have similar names. This helps contributors find the correct site.
+      placeholder: https://example.com
+    validations:
+      required: true
+  - type: input
+    id: profile-url
+    attributes:
+      label: Example profile URL
+      description: |
+        Provide an example URL of an existing user profile on this site.
+        This helps determine the URL pattern for detection.
+      placeholder: https://example.com/username
+    validations:
+      required: true
+  - type: dropdown
+    id: detection-type
+    attributes:
+      label: Suggested detection method
+      description: |
+        How does the site indicate a username doesn't exist?
+        Check the site manually with a non-existing username to find out.
+      options:
+        - Error message in page (errorType: message)
+        - HTTP status code like 404 (errorType: status_code)
+        - Redirect to another URL (errorType: response_url)
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: |
+        If you have suggestions on how Sherlock.Net should detect usernames on this site, please explain.
+        Include any error messages, status codes, or redirect URLs you observed.
+      placeholder: |
+        When a username doesn't exist, the site shows "User not found" in the page body.
+        The profile URL pattern is: https://example.com/{username}
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

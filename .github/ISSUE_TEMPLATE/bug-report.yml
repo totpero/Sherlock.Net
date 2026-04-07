@@ -1,0 +1,86 @@
+name: Bug report
+description: Report a bug or unexpected behavior in Sherlock.Net
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Installation method
+      description: How did you install Sherlock.Net?
+      options:
+        - .NET tool (dotnet tool install)
+        - NuGet package (Sherlock.Net.Core library)
+        - Built from source
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: |
+        What version of Sherlock.Net are you using?
+        Run `sherlock --version` for CLI or check your .csproj for the library version.
+      placeholder: "0.16.0"
+    validations:
+      required: true
+  - type: input
+    id: dotnet-version
+    attributes:
+      label: .NET version
+      description: |
+        What version of .NET are you using?
+        Run `dotnet --version` to find out.
+      placeholder: "10.0.100"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Provide detailed context about the issue.
+        What were you trying to do? What did you expect to happen? What actually happened?
+        Detailed descriptions that help contributors understand and reproduce your bug are much more likely to lead to a fix.
+      placeholder: |
+        I was trying to search for username "xyz" and expected to see results, but instead got an error...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide steps to reproduce the issue.
+      placeholder: |
+        1. Run `sherlock --site GitHub testuser`
+        2. Observe the error message
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: Any additional information, logs, or screenshots that might help.
+      placeholder: Paste any error output, stack traces, or relevant logs here.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
